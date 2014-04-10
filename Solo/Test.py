@@ -1,3 +1,6 @@
+## First test Game - colliding balls
+## Joseph Yu
+
 import pygame
 from pygame.locals import *
 import random, math, sys
