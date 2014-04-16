@@ -27,13 +27,13 @@ def process_input(prev_direction):
             key = event.key
             if key == K_ESCAPE:
                 game_status = 0
-            elif key == K_UP:
+            elif key == pygame.K_w:
                 direction = (0, -1)
-            elif key == K_DOWN:
+            elif key == pygame.K_s:
                 direction = (0, 1)
-            elif key == K_LEFT:
+            elif key == pygame.K_a:
                 direction = (-1, 0)
-            elif key == K_RIGHT:
+            elif key == pygame.K_d:
                 direction = (1, 0)
     return game_status, direction
     
@@ -119,4 +119,4 @@ while game_status:
     
     draw_everything(screen, mybox, pellets, borders)
     
-    clock.tick(50)  # or sleep(.02) to have the loop Pygame-independent
+    clock.tick(100)  # or sleep(.02) to have the loop Pygame-independent
