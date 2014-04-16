@@ -18,7 +18,7 @@ from pygame.locals import KEYDOWN, QUIT, K_ESCAPE, K_UP, K_DOWN, K_LEFT, K_RIGHT
 
 ############################################################
 
-def process_input(prev_direction):
+def process_input(prev_direction): #Q2 - changed method to change directions
     game_status, direction = 1, prev_direction
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -27,7 +27,7 @@ def process_input(prev_direction):
             key = event.key
             if key == K_ESCAPE:
                 game_status = 0
-            elif key == pygame.K_w:
+            elif key == pygame.K_w: 
                 direction = (0, -1)
             elif key == pygame.K_s:
                 direction = (0, 1)
@@ -39,7 +39,7 @@ def process_input(prev_direction):
     
 ############################################################
 
-def draw_everything(screen, mybox, pellets, borders):
+def draw_everything(screen, mybox, pellets, borders): #Q1 - changed this method to change colors
     screen.fill((0, 64, 0))  # dark green
     [pygame.draw.rect(screen, (255, 191, 0), b) for b in borders]  # # Deep Sky Blue
     [pygame.draw.rect(screen, (192, 203, 100), p) for p in pellets]  # pink
@@ -63,7 +63,7 @@ def collide(box, boxes):
 ############################################################
 
 def move(box, direction): 
-    return box.move(direction[0], direction[1]) 
+    return box.move(direction[0]*2, direction[1]*2) #Q3a - speed up player
 
 ############################################################
 
@@ -72,7 +72,9 @@ def create_borders(dims, thickness=2):
     return [pygame.Rect(0, 0, thickness, h),
             pygame.Rect(0, 0, w, thickness),
             pygame.Rect(w - thickness, 0, thickness, h),
-            pygame.Rect(0, h - thickness, w, thickness)]
+            pygame.Rect(0, h - thickness, w, thickness),
+            pygame.Rect(w/2, h/3, 100, thickness), #Q4 - Add two obstacles
+            pygame.Rect(w/3, h/2, thickness, 100)]
     
 ############################################################
 
@@ -119,4 +121,4 @@ while game_status:
     
     draw_everything(screen, mybox, pellets, borders)
     
-    clock.tick(100)  # or sleep(.02) to have the loop Pygame-independent
+    clock.tick(50)  # or sleep(.02) to have the loop Pygame-independent
