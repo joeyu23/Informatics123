@@ -19,7 +19,7 @@ class MyHandler(Handler):
                 users += ', ' + handlers[handler]
         for handler in handlers:
             handler.do_send({'leave':name, 'users':users})
-     
+    
     def on_msg(self, msg):
         if 'join' in  msg:
             handlers[self] = msg['join']
@@ -35,9 +35,10 @@ class MyHandler(Handler):
             for handler in handlers:
                 if handlers[handler] != msg['speak']:
                     handler.do_send({'name':msg['speak'], 'txt':msg['txt']})
- 
+
 port = 8888
 server = Listener(port, MyHandler)
+
 while 1:
     try:
         poll(timeout=0.05) # in seconds

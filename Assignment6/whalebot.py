@@ -2,6 +2,12 @@ from random import choice
 from time import sleep
 
 from common import Model
+from network import Handler, poll
+from pygame import Rect, init as init_pygame
+from pygame.display import set_mode, update as update_pygame_display
+from pygame.draw import rect as draw_rect
+from pygame.event import get as get_pygame_events
+from pygame.time import Clock
 
 
 ################### CONTROLLER #############################
@@ -32,12 +38,22 @@ class SmartBotController():
         else:
             cmd = 'up'
         self.m.do_cmd(cmd)
+        
+################### NETWORK CONTROLLER #############################
+class NetworkController(Handler):
+    def on_msg(self, data):
+        global borders, pellets, players, myname
+        borders = [make_rect(b) for b in data['borders']]
+        pellets = [make_rect(p) for p in data['pellets']]
+        players = {name: make_rect(p) for name, p in data['players'].items()}
+        myname = data['myname']
 
 ################### CONSOLE VIEW #############################
 
 class ConsoleView():
     def __init__(self, m):
         self.m = m
+        pygame.init()
         self.frame_freq = 20
         self.frame_count = 0
         
@@ -81,9 +97,32 @@ c = RandomBotController(model)
 v = ConsoleView(model)
 #v2 = PygameView(model)
 
+def make_rect(quad):
+    x, y, w, h = quad
+    return Rect(x, y, w, h)
+
+client = NetworkController('localhost',8888)
+
+borders = []
+pellets = []
+players = {}
+myname = None
+clock = Clock()
+
+while(borders == []):
+    poll()
+    print "Waiting for server.."
+    
+print "Successfully connected to server!"
+
+model = Model()
+c = SmartBotController(model)
+v = ConsoleView(model)
+v2 = PygameView(model)
+
 while not model.game_over:
     sleep(0.02)
     c.poll()
     model.update()
     v.display()
-    #v2.display()
+    v2.display()

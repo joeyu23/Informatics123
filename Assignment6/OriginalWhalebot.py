@@ -77,13 +77,13 @@ class PygameView():
 ################### LOOP #############################
 
 model = Model()
-c = RandomBotController(model)
+c = SmartBotController(model)
 v = ConsoleView(model)
-#v2 = PygameView(model)
+v2 = PygameView(model)
 
 while not model.game_over:
     sleep(0.02)
     c.poll()
     model.update()
     v.display()
-    #v2.display()
+    v2.display()
